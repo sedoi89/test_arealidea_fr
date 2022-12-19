@@ -28,31 +28,24 @@ export default {
       request: {
         title: '',
         description: '',
-
       }
     }
   },
   methods: {
-
     createRequest(title, description) {
         this.$store.commit('toggleAddUnexpectedTask', false)
       if (!title || !description) {
         return
       }
-
       this.$store.dispatch('createTask', {title: title, description: description})
       this.$store.commit('toggleAddTask', false)
-
     },
   }
 }
 </script>
-
 <style scoped>
 form {
   display: flex;
   flex-direction: column;
 }
-
-
 </style>

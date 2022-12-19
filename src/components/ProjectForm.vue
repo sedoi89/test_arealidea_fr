@@ -27,9 +27,7 @@ export default {
     }
   },
   methods: {
-
     createProject(title) {
-
       if (!title) {
         return
       }
@@ -45,6 +43,4 @@ form {
   display: flex;
   flex-direction: column;
 }
-
-
 </style>

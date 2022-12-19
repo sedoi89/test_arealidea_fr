@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" v-if="show" @click="hideDialog">
+  <div class="dialog" v-if="show" @click="checkTheMethod">
     <div @click.stop class="dialog__content">
       <slot></slot>
     </div>
@@ -16,9 +16,14 @@ export default {
     }
   },
   methods: {
-    hideDialog () {
-      this.$store.commit('toggleDialog', false)
-    }
+    checkTheMethod() {
+      if (!this.$route.params.id) {
+        this.$store.commit('toggleAddUnexpectedTask', false)
+        this.$store.commit('toggleDialog', false)
+      }
+      this.$store.commit('toggleAddTask', false)
+    },
+
   }
 }
 </script>

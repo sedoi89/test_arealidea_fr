@@ -20,18 +20,15 @@
       >
         <RequestForm
             :key="project.id"
-
         />
       </my-dialog>
     </div>
-
-
     <div class="project__requests" >
       <div class="request_item">
         <RequestItem
             v-if="!isEmpty(project.requests) "
             v-for="request in project.requests"
-            :requests="request"
+            :request="request"
             :key="project.id"
             :isEditing="isEditing"
         />
@@ -39,7 +36,6 @@
          <strong> У проекта пока нет задач </strong>
         </div>
       </div>
-
     </div>
     <div class="project__buttons">
       <my-button
@@ -63,11 +59,8 @@
       </my-button>
     </div>
   </div>
-
 </template>
-
 <script>
-
 import MyButton from "@/components/UI/MyButton";
 import RequestItem from "@/components/RequestItem";
 import MyInput from "@/components/UI/MyInput";
@@ -98,7 +91,6 @@ export default {
       this.$store.commit('setCurrentId', this.project.id)
     },
     newTask() {
-      console.log(this.project.id)
       this.$store.commit('setCurrentId', this.project.id)
       this.$store.commit('toggleAddTask', true)
     },
@@ -126,7 +118,6 @@ export default {
   justify-content: space-between;
   flex-direction: column;
 }
-
 .project button {
   width: 50%;
   min-height: 55px;

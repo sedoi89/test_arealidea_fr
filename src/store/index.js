@@ -12,7 +12,8 @@ export default createStore({
         currentId: {
             type: Number
         },
-        currentRequest: []
+        currentRequest: [],
+        statuses: []
 
     },
     getters: {},
@@ -98,7 +99,26 @@ export default createStore({
         },
         setId(state, payload) {
             state.currentRequest.project_ID = payload
+        },
+        fetchStatus(state, payload) {
+            state.statuses = payload
+        },
+        setNewStatus(state, payload) {
+          state.currentRequest.currentStatus[0].cod = payload.cod;
+            state.currentRequest.currentStatus[0].title = payload.title
+        },
+        updateRequest(state, payload) {
+          state.currentRequest.title = payload.title;
+          state.currentRequest.description = payload.description
+        },
+        getRequests(state, payload) {
+            return  state.projects.map(i => {
+                if (i.id === payload) {
+                    return i.requests
+                }
+            })
         }
+
     },
     actions: {
         async fetchProjects({commit}) {
@@ -134,8 +154,10 @@ export default createStore({
 
             }).then(res => {
                 if (!this.state.addNewUnexpectedTask) {
+
                     commit('addTask', res.data)
                     commit('setCurrentId', '')
+                    return
                 }
                 commit('setNewUnexpectedRequest', res.data)
 
@@ -158,8 +180,9 @@ export default createStore({
                 requestID:payload.requestID
             }).then(res => {
                 commit('addTask',res.data)
-                if(payload.setNull) {
+                if(payload.id) {
                     commit('setId', this.state.currentId)
+
                     return
                 }
                 commit('deleteUnexpectedTask', res.data)
@@ -172,13 +195,47 @@ export default createStore({
                 requestId:payload.requestID
             }).then(res => {
                 commit('deleteTaskFromProject', res.data);
-                commit('setNull', 'new value')
+                commit('setNull', payload.id)
             })
         },
         async fetchRequest({commit}, payload) {
             await axios.get(`http://localhost:3000/requests/${payload}`).then(
                 res => commit('setRequest', res.data)
             )
+        },
+        async fetchStatuses({commit}) {
+            await axios.get('http://localhost:3000/status').then(
+                res => commit('fetchStatus', res.data)
+            )
+        },
+        async nextStatus({commit}, payload) {
+            await axios.post('http://localhost:3000/requests/status/next', {
+                request_ID: payload.request_ID,
+                complete: payload.complete,
+                value: payload.value? payload.value : null
+            })
+        },
+        async prevStatus({commit}, payload) {
+            await axios.post('http://localhost:3000/requests/status/prev', {
+                request_ID: payload.request_ID,
+                complete: payload.complete
+            })
+        },
+        async deleteTask({commit}, payload) {
+            await axios.delete('http://localhost:3000/requests', {
+                data: {
+                    requestId: payload
+                }
+            })
+        },
+        async patchRequest ({commit}, payload) {
+            await axios.patch('http://localhost:3000/requests', {
+                requestId:payload.requestId,
+                title: payload.title,
+                description: payload.description
+            }).then(res => {
+                commit('updateRequest', res.data)
+            })
         }
     }
 })
