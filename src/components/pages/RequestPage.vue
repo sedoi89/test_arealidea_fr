@@ -89,13 +89,13 @@ export default {
   name: 'request-item',
   components: {MyButton},
   async mounted() {
-    await this.$store.dispatch('fetchRequest', this.$route.params.requestId)
-    this.$store.commit('setCurrentId', this.$route.params.id)
-    await this.$store.dispatch('fetchStatuses')
-    this.model = this.$store.state.currentRequest.currentStatus[0].cod
-    this.statuses = this.$store.state.statuses
-    this.newRequestTitle = this.request.title
-    this.newRequestDescription = this.request.description
+    await this.$store.dispatch('fetchRequest', this.$route.params.requestId);
+    this.$store.commit('setCurrentId', this.$route.params.id);
+    await this.$store.dispatch('fetchStatuses');
+    this.model = this.$store.state.currentRequest.currentStatus[0].cod;
+    this.statuses = this.$store.state.statuses;
+    this.newRequestTitle = this.request.title;
+    this.newRequestDescription = this.request.description;
   },
   data() {
     return {
@@ -111,15 +111,15 @@ export default {
   },
   computed: {
     request() {
-      return this.$store.state.currentRequest
+      return this.$store.state.currentRequest;
     }
   },
   methods: {
     bind() {
-      this.$store.dispatch('bindTask', {requestID: this.$route.params.requestId, id: this.$route.params.id})
+      this.$store.dispatch('bindTask', {requestID: this.$route.params.requestId, id: this.$route.params.id});
     },
     unBind() {
-      this.$store.dispatch('unbindTask', {requestID: this.$route.params.requestId, id: null})
+      this.$store.dispatch('unbindTask', {requestID: this.$route.params.requestId, id: null});
     },
     forApproval(e) {
       if (this.$store.state.currentRequest.currentStatus[0].cod === 'preform' && e.target.value === 'in_work') {
@@ -181,8 +181,8 @@ export default {
       }
     },
     deleteTask() {
-      this.$store.dispatch('deleteTask', Number(this.$route.params.requestId))
-      this.$router.push(`/${this.$route.params.id}`)
+      this.$store.dispatch('deleteTask', Number(this.$route.params.requestId));
+      this.$router.push(`/${this.$route.params.id}`);
     },
     changeRequestTextContent() {
       this.$store.dispatch('patchRequest', {

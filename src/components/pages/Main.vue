@@ -13,7 +13,8 @@
       >
         Новая задача
       </my-button>
-      <my-button v-if="isEmpty(this.$store.state.statuses)">Создать статусы (просто ради удобства)</my-button>
+      <my-button @click="this.$store.dispatch('statusPost')" v-if="isEmpty(this.$store.state.statuses)">Создать статусы (просто ради удобства)</my-button>
+      <div v-else></div>
     </div>
     <my-dialog
         :show="$store.state.addNewUnexpectedTask"
@@ -54,10 +55,10 @@ export default {
   },
   methods: {
     showDialog() {
-      this.$store.commit('toggleDialog', true)
+      this.$store.commit('toggleDialog', true);
     },
     newTask() {
-      this.$store.commit('toggleAddUnexpectedTask', true)
+      this.$store.commit('toggleAddUnexpectedTask', true);
     },
     isEmpty(obj) {
       for (let key in obj) {
@@ -67,10 +68,10 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('fetchProjects')
-    await this.$store.dispatch('fetchUnexpectedRequests')
-    await this.$store.dispatch('fetchStatuses')
-    this.$store.commit('setCurrentId', false)
+    await this.$store.dispatch('fetchProjects');
+    await this.$store.dispatch('fetchUnexpectedRequests');
+    await this.$store.dispatch('fetchStatuses');
+    this.$store.commit('setCurrentId', false);
   },
   computed: {
     projects() {

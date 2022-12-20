@@ -20,7 +20,11 @@
 
 <script>
 
+import MyInput from "@/components/UI/MyInput.vue";
+import MyButton from "@/components/UI/MyButton.vue";
+
 export default {
+  components: {MyButton, MyInput},
 
   data() {
     return {
@@ -33,12 +37,12 @@ export default {
   },
   methods: {
     createRequest(title, description) {
-        this.$store.commit('toggleAddUnexpectedTask', false)
+        this.$store.commit('toggleAddUnexpectedTask', false);
       if (!title || !description) {
         return
       }
-      this.$store.dispatch('createTask', {title: title, description: description})
-      this.$store.commit('toggleAddTask', false)
+      this.$store.dispatch('createTask', {title: title, description: description});
+      this.$store.commit('toggleAddTask', false);
     },
   }
 }

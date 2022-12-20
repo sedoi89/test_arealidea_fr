@@ -19,62 +19,62 @@ export default createStore({
     getters: {},
     mutations: {
         updateProjects(state, payload) {
-            state.projects = payload
+            state.projects = payload;
         },
         updateUnexpectedRequests(state, payload) {
-            state.unexpectedRequests = payload
+            state.unexpectedRequests = payload;
         },
         filterProject(state, payload) {
-            state.projects = state.projects.filter(p => p.id !== payload)
+            state.projects = state.projects.filter(p => p.id !== payload);
         },
         addProject(state, payload) {
-            state.projects.push(payload)
+            state.projects.push(payload);
         },
         toggleDialog(state, payload) {
-            state.dialogVisible = payload
+            state.dialogVisible = payload;
         },
         toggleAddTask(state, payload) {
-            state.addNewTask = payload
+            state.addNewTask = payload;
         },
         toggleAddUnexpectedTask(state, payload) {
-            state.addNewUnexpectedTask = payload
+            state.addNewUnexpectedTask = payload;
         },
         setCurrentId(state, payload) {
-            state.currentId = payload
+            state.currentId = payload;
         },
         addTask(state, payload) {
             payload.project_ID = state.currentId
             state.projects.map(i => {
                 if (i.id === state.currentId) {
                     if (i.requests) {
-                        i.requests.unshift(payload)
+                        i.requests.unshift(payload);
                     }
                    else {i.requests = [payload]}
                 }
-                return i
+                return i;
             })
         },
         editProject(state, payload) {
             state.projects.map(i => {
                 if (i.id === payload.id) {
-                    i.title = payload.title
+                    i.title = payload.title;
                 }
-                return i
+                return i;
             })
         },
         setNewUnexpectedRequest(state, payload) {
-            state.unexpectedRequests.push(payload)
+            state.unexpectedRequests.push(payload);
         },
         deleteUnexpectedTask(state, payload) {
             let item = null
            state.unexpectedRequests = state.unexpectedRequests.filter(i =>
            {
               if (i.id !== payload.id) {
-                  return i
+                  return i;
               }
-              item = i
+              item = i;
            })
-            item.project_ID = state.currentId
+            item.project_ID = state.currentId;
         },
         deleteTaskFromProject(state, payload) {
             let item = null
@@ -92,29 +92,29 @@ export default createStore({
            })
         },
         setRequest(state, payload) {
-            state.currentRequest = payload
+            state.currentRequest = payload;
         },
         setNull(state, payload) {
-            state.currentRequest.project_ID = payload
+            state.currentRequest.project_ID = payload;
         },
         setId(state, payload) {
-            state.currentRequest.project_ID = payload
+            state.currentRequest.project_ID = payload;
         },
         fetchStatus(state, payload) {
-            state.statuses = payload
+            state.statuses = payload;
         },
         setNewStatus(state, payload) {
           state.currentRequest.currentStatus[0].cod = payload.cod;
-            state.currentRequest.currentStatus[0].title = payload.title
+            state.currentRequest.currentStatus[0].title = payload.title;
         },
         updateRequest(state, payload) {
           state.currentRequest.title = payload.title;
-          state.currentRequest.description = payload.description
+          state.currentRequest.description = payload.description;
         },
         getRequests(state, payload) {
             return  state.projects.map(i => {
                 if (i.id === payload) {
-                    return i.requests
+                    return i.requests;
                 }
             })
         }
@@ -123,12 +123,11 @@ export default createStore({
     actions: {
         async fetchProjects({commit}) {
             const response = (await axios.get('http://localhost:3000/project'))
-
-            commit('updateProjects', response.data)
+            commit('updateProjects', response.data);
         },
         async fetchUnexpectedRequests({commit}) {
             const response = (await axios.get('http://localhost:3000/requests'))
-            commit('updateUnexpectedRequests', response.data)
+            commit('updateUnexpectedRequests', response.data);
         },
         async deleteProject({commit}, payload) {
             await axios.delete('http://localhost:3000/project', {
@@ -136,13 +135,13 @@ export default createStore({
                     projectId: payload
                 }
             })
-            commit('filterProject', payload)
+            commit('filterProject', payload);
         },
         async createProject({commit}, payload) {
             await axios.post('http://localhost:3000/project', {
                 title: payload
             }).then(res => {
-                commit('addProject', res.data)})
+                commit('addProject', res.data)});
         },
         async createTask({commit}, payload) {
 
@@ -155,11 +154,11 @@ export default createStore({
             }).then(res => {
                 if (!this.state.addNewUnexpectedTask) {
 
-                    commit('addTask', res.data)
-                    commit('setCurrentId', '')
+                    commit('addTask', res.data);
+                    commit('setCurrentId', '');
                     return
                 }
-                commit('setNewUnexpectedRequest', res.data)
+                commit('setNewUnexpectedRequest', res.data);
 
             })
 
@@ -170,7 +169,7 @@ export default createStore({
                 projectId: this.state.currentId,
                 title: payload
             }).then(res => {
-                    commit('editProject', {id: res.data.projectId, title: payload})
+                    commit('editProject', {id: res.data.projectId, title: payload});
                 }
             )
         },
@@ -181,11 +180,11 @@ export default createStore({
             }).then(res => {
                 commit('addTask',res.data)
                 if(payload.id) {
-                    commit('setId', this.state.currentId)
+                    commit('setId', this.state.currentId);
 
                     return
                 }
-                commit('deleteUnexpectedTask', res.data)
+                commit('deleteUnexpectedTask', res.data);
 
             })
         },
@@ -195,7 +194,7 @@ export default createStore({
                 requestId:payload.requestID
             }).then(res => {
                 commit('deleteTaskFromProject', res.data);
-                commit('setNull', payload.id)
+                commit('setNull', payload.id);
             })
         },
         async fetchRequest({commit}, payload) {
@@ -234,7 +233,12 @@ export default createStore({
                 title: payload.title,
                 description: payload.description
             }).then(res => {
-                commit('updateRequest', res.data)
+                commit('updateRequest', res.data);
+            })
+        },
+        async statusPost({commit}) {
+            await axios.post('http://localhost:3000/status').then(res => {
+                commit('fetchStatus', res.data);
             })
         }
     }

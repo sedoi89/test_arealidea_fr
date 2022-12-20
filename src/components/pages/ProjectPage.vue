@@ -37,22 +37,22 @@ export default {
     RequestItem
   },
   async mounted() {
-    this.$store.commit('setCurrentId', Number(this.$route.params.id))
-    await this.$store.dispatch('fetchProjects')
-    await this.$store.dispatch('fetchUnexpectedRequests')
+    this.$store.commit('setCurrentId', Number(this.$route.params.id));
+    await this.$store.dispatch('fetchProjects');
+    await this.$store.dispatch('fetchUnexpectedRequests');
   },
   computed: {
     projects() {
       let arr = [];
       this.$store.state.projects.map(i => {
         if (i.id === Number(this.$route.params.id)) {
-          arr.push(i)
+          arr.push(i);
         }
       })
       return arr
     },
     requests() {
-      return this.$store.state.unexpectedRequests
+      return this.$store.state.unexpectedRequests;
     },
   },
 }

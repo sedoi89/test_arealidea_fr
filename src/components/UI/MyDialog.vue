@@ -18,10 +18,10 @@ export default {
   methods: {
     checkTheMethod() {
       if (!this.$route.params.id) {
-        this.$store.commit('toggleAddUnexpectedTask', false)
-        this.$store.commit('toggleDialog', false)
+        this.$store.commit('toggleAddUnexpectedTask', false);
+        this.$store.commit('toggleDialog', false);
       }
-      this.$store.commit('toggleAddTask', false)
+      this.$store.commit('toggleAddTask', false);
     },
 
   }

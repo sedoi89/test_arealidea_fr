@@ -83,20 +83,20 @@ export default {
   },
   methods: {
     async removeProject() {
-      this.$router.push('/')
-      await this.$store.dispatch('deleteProject', this.project.id)
+      this.$router.push('/');
+      await this.$store.dispatch('deleteProject', this.project.id);
     },
     editingProject() {
       this.isEditing = true;
-      this.$store.commit('setCurrentId', this.project.id)
+      this.$store.commit('setCurrentId', this.project.id);
     },
     newTask() {
-      this.$store.commit('setCurrentId', this.project.id)
-      this.$store.commit('toggleAddTask', true)
+      this.$store.commit('setCurrentId', this.project.id);
+      this.$store.commit('toggleAddTask', true);
     },
     saveEditing() {
-      this.$store.dispatch('updateProject', this.newValue)
-      this.isEditing = false
+      this.$store.dispatch('updateProject', this.newValue);
+      this.isEditing = false;
     },
     isEmpty(obj) {
   for (let key in obj) {

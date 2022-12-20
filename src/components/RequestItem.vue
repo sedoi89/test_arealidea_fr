@@ -41,10 +41,10 @@ export default {
   },
   methods: {
     bind() {
-      this.$store.dispatch('bindTask', {requestID: this.request.id})
+      this.$store.dispatch('bindTask', {requestID: this.request.id});
     },
     unBind() {
-      this.$store.dispatch('unbindTask', {requestID: this.request.id, setNull: NaN})
+      this.$store.dispatch('unbindTask', {requestID: this.request.id, setNull: NaN});
     },
     isEmpty(obj) {
       for (let key in obj) {

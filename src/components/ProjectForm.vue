@@ -31,8 +31,8 @@ export default {
       if (!title) {
         return
       }
-      this.$store.dispatch('createProject', title)
-      this.$store.commit('toggleDialog', false)
+      this.$store.dispatch('createProject', title);
+      this.$store.commit('toggleDialog', false);
     },
   }
 }
