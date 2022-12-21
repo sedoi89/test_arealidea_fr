@@ -1,26 +1,25 @@
 <template>
-  <div  class="app">
-<router-view></router-view>
-  </div>
+  <v-app>
+    <v-main>
+      <RouterView></RouterView>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
+
+
+import Main from "@/components/pages/Main.vue";
+
 export default {
-  async mounted() {
-    await this.$store.dispatch('fetchProjects')
-    await this.$store.dispatch('fetchUnexpectedRequests')
-  }
+  name: 'App',
+
+  components: {
+    Main,
+  },
+
+  data: () => ({
+    //
+  }),
 }
 </script>
-
-<style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.app {
-  padding: 20px;
-}
-</style>

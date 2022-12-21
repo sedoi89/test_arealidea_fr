@@ -1,21 +1,35 @@
 <template>
-  <form>
-    <h4>Создание Задачи</h4>
-    <my-input
-        v-model="request.title"
-        type="text"
-        placeholder="Название"/>
-    <my-input
-        v-model="request.description"
-        type="text"
-        placeholder="Описание задачи"/>
-    <my-button
-        @click="createRequest(request.title, request.description, this.isUnexpexted)"
-        style="align-self: flex-end; margin-top: 15px"
-    >
-      Создать задачу
-    </my-button>
-  </form>
+  <v-card>
+    <v-card-title> Создание Задачи</v-card-title>
+    <div class="v-container">
+      <v-form
+          ref="form"
+      >
+
+        <v-text-field
+            v-model="title"
+            label="Название"
+            :rules="titleRules"
+            required
+        />
+        <v-text-field
+            v-model="description"
+            label="Описание задачи"
+            :rules="descriptionRules"
+            required
+        />
+        <v-row justify="end" class="mb-2">
+          <v-btn
+              @click="validate"
+
+          >
+            Создать задачу
+          </v-btn>
+        </v-row>
+      </v-form>
+    </div>
+  </v-card>
+
 </template>
 
 <script>
@@ -25,24 +39,30 @@ import MyButton from "@/components/UI/MyButton.vue";
 
 export default {
   components: {MyButton, MyInput},
-
-  data() {
-    return {
-      isUnexpexted:  this.$store.state.addNewUnexpectedTask,
-      request: {
-        title: '',
-        description: '',
-      }
-    }
+  mounted() {
+    this.isUnexpected = this.$store.state.addNewUnexpectedTask
   },
+  data: () => ({
+    valid: true,
+    title: '',
+    titleRules: [
+      v => !!v || 'Название обязательно',
+    ],
+    description: '',
+    descriptionRules: [
+      v => !!v || 'Название обязательно',
+    ],
+    isUnexpected: null
+  }),
+
   methods: {
-    createRequest(title, description) {
+    async validate() {
+      const {valid} = await this.$refs.form.validate()
+      if (valid) {
         this.$store.commit('toggleAddUnexpectedTask', false);
-      if (!title || !description) {
-        return
+        this.$store.dispatch('createTask', {title: this.title, description: this.description});
+        this.$store.commit('toggleAddTask', false);
       }
-      this.$store.dispatch('createTask', {title: title, description: description});
-      this.$store.commit('toggleAddTask', false);
     },
   }
 }

@@ -2,31 +2,31 @@
   <div class="main">
     <div class="main__projects">
       <h1>Все проекты </h1>
-      <my-button
+      <v-btn
           class="main__projects btn"
           @click="showDialog"
       >
-        Создать новый проект
-      </my-button>
-      <my-button
+        Новый проект
+      </v-btn>
+      <v-btn
           @click="newTask"
       >
         Новая задача
+      </v-btn>
+      <my-button @click="this.$store.dispatch('statusPost')" v-if="isEmpty(this.$store.state.statuses)">Создать статусы
+        (просто ради удобства)
       </my-button>
-      <my-button @click="this.$store.dispatch('statusPost')" v-if="isEmpty(this.$store.state.statuses)">Создать статусы (просто ради удобства)</my-button>
-      <div v-else></div>
     </div>
-    <my-dialog
-        :show="$store.state.addNewUnexpectedTask"
+    <v-dialog
+        v-model="this.$store.state.addNewUnexpectedTask"
     >
-      <RequestForm
-      />
-    </my-dialog>
-    <my-dialog
-        :show="$store.state.dialogVisible"
+      <RequestForm/>
+    </v-dialog>
+    <v-dialog
+        v-model="this.$store.state.dialogVisible"
     >
       <project-form/>
-    </my-dialog>
+    </v-dialog>
     <all-projects
         v-if="projects.length"
     />
@@ -45,6 +45,11 @@ import RequestItem from "@/components/RequestItem";
 import allProjects from "@/components/allProjects";
 
 export default {
+  data() {
+    return {
+      dialog: false,
+    }
+  },
   components: {
     MyButton,
     MyDialog,
@@ -84,17 +89,21 @@ export default {
 .main {
   padding: 20px;
 }
+
 .main__projects {
   display: flex;
   width: 100%;
 }
+
 .main__projects h1 {
   width: 100%;
 }
+
 .main__projects .btn {
   align-self: flex-end;
   max-width: 20%;
 }
+
 button {
   margin-right: 10px;
   min-height: 50px;

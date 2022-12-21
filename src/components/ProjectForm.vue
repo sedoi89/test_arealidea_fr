@@ -1,38 +1,51 @@
 <template>
-  <form>
-    <h4>Создание проекта</h4>
-    <my-input
-        v-model="project.title"
-        type="text"
-        placeholder="Название"/>
-    <my-button
-        @click="createProject(project.title)"
-        style="align-self: flex-end; margin-top: 15px"
-    >
-      Создать проект
-    </my-button>
-  </form>
+    <v-card>
+      <v-card-title>Создание проекта</v-card-title>
+      <div class="v-container">
+        <v-form
+            ref="form"
+        >
+          <v-text-field
+              v-model="title"
+              label="Название проекта"
+              :rules="titleRules"
+              required
+          ></v-text-field>
+          <v-row
+              justify="end"
+              class="mb-2"
+          >
+            <v-btn
+                max-width="17%"
+                @click="validate"
+            >Создать</v-btn>
+          </v-row>
+        </v-form>
+      </div>
+
+    </v-card>
+
 </template>
 
 <script>
 
 export default {
 
-  data() {
-    return {
-      project: {
-        title: '',
-        id: ''
-      }
-    }
-  },
+  data: () => ({
+    valid: true,
+    title: '',
+    titleRules: [
+      v => !!v || 'Название обязательно',
+    ],
+  }),
   methods: {
-    createProject(title) {
-      if (!title) {
-        return
+    async validate () {
+      const { valid } = await this.$refs.form.validate()
+
+      if (valid) {
+        this.$store.dispatch('createProject', this.title);
+        this.$store.commit('toggleDialog', false);
       }
-      this.$store.dispatch('createProject', title);
-      this.$store.commit('toggleDialog', false);
     },
   }
 }
