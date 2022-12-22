@@ -1,29 +1,38 @@
 <template>
   <div class="request" @click="$router.push(`/${this.$route.params.id}/${this.request.id}`)">
     <div class="request__item">
-      <div>
-        <h4>Задача №{{ request.id }}</h4>
-        Название задачи: {{ request.title }} <br>
-        Описание задачи: {{ request.description }}
-      </div>
+
+        <v-card-title>Задача №{{ request.id }}</v-card-title>
+
+      <v-card-subtitle>Название задачи:</v-card-subtitle>
+      <v-card-text>{{ request.title }} </v-card-text>
+
+        <v-card-subtitle>Описание задачи:</v-card-subtitle>
+      <v-card-text> {{ request.description }}</v-card-text>
+
+
       <div v-if="!isEmpty(request.currentStatus)">
-        Статус задачи: {{ request.currentStatus[0].title }}
+       <v-card-subtitle> Статус задачи:</v-card-subtitle>
+        <v-card-text> {{ request.currentStatus[0].title }}</v-card-text>
+
       </div>
       <div v-else>
         У задачи пока нет статуса
       </div>
-      <my-button
+      <v-btn
+          color="green"
           v-if=" request.project_ID === null"
           @click.stop="bind"
       >
         Прикрепить к проекту
-      </my-button>
-      <my-button
+      </v-btn>
+      <v-btn
+          variant="tonal"
           v-else
           @click.stop="unBind"
       >
         Открепить от проекта
-      </my-button>
+      </v-btn>
     </div>
   </div>
 </template>
@@ -59,11 +68,12 @@ export default {
 .request__item {
   display: flex;
   flex-direction: column;
-  border: 1px solid green;
+  border: 1px solid rgba(0,0,0, 0.2);
+  border-radius: 10px;
   margin: 5px;
   padding: 10px;
   gap: 5px;
-  width: 170px;
+
   min-height: 210px;
 }
 .request__item:hover {

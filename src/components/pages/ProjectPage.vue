@@ -1,28 +1,33 @@
 <template>
   <div v-if="projects.length" class="container">
-    <div class="container__wrapper">
-      <my-button @click="this.$router.push('/')">На главную страницу</my-button>
+    <v-container class="container__wrapper">
+      <v-btn variant="outlined" @click="this.$router.push('/')">На главную страницу</v-btn>
       <ProjectItem
           v-for="project in projects"
           :key="project.id"
           :project="project"
       />
-    </div>
+    </v-container>
   </div>
   <h2 v-else class="color-red">
     Такого проекта не существует
   </h2>
+<v-container>
   <h2>Необработанные заявки</h2>
-  <div
+</v-container>
+
+  <v-container
+
       v-if="$store.state.unexpectedRequests"
       class="unexpectedRequests"
   >
+
     <request-item
         v-for="request in requests"
         :key="request.id"
         :request="request"
     />
-  </div>
+  </v-container>
   <div v-else>Все заявки в работе</div>
 </template>
 <script>
@@ -65,7 +70,6 @@ export default {
 .container__wrapper {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
   flex-direction: column;
 }
 .color-red {

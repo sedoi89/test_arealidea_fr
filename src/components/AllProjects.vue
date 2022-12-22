@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <v-container class="container">
   <v-table>
     <thead>
     <tr>
@@ -21,7 +21,7 @@
     </tr>
     </tbody>
   </v-table>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -37,5 +37,8 @@ export default {
 <style scoped>
 td:hover {
   cursor: pointer;
+}
+thead tr {
+  background-color: rgba(0,0,0,0.05);
 }
 </style>

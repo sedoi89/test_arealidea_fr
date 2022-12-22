@@ -122,15 +122,15 @@ export default createStore({
     },
     actions: {
         async fetchProjects({commit}) {
-            const response = (await axios.get('http://localhost:3000/project'))
+            const response = (await axios.get('http://192.168.3.22:3000/project'))
             commit('updateProjects', response.data);
         },
         async fetchUnexpectedRequests({commit}) {
-            const response = (await axios.get('http://localhost:3000/requests'))
+            const response = (await axios.get('http://192.168.3.22:3000/requests'))
             commit('updateUnexpectedRequests', response.data);
         },
         async deleteProject({commit}, payload) {
-            await axios.delete('http://localhost:3000/project', {
+            await axios.delete('http://192.168.3.22:3000/project', {
                 data: {
                     projectId: payload
                 }
@@ -138,14 +138,14 @@ export default createStore({
             commit('filterProject', payload);
         },
         async createProject({commit}, payload) {
-            await axios.post('http://localhost:3000/project', {
+            await axios.post('http://192.168.3.22:3000/project', {
                 title: payload
             }).then(res => {
                 commit('addProject', res.data)});
         },
         async createTask({commit}, payload) {
 
-            await axios.post('http://localhost:3000/requests', {
+            await axios.post('http://192.168.3.22:3000/requests', {
                 title: payload.title,
                 description: payload.description,
                 projectID: this.state.currentId ? this.state.currentId : null,
@@ -165,7 +165,7 @@ export default createStore({
 
         },
         async updateProject({commit}, payload) {
-            await axios.patch('http://localhost:3000/project', {
+            await axios.patch('http://192.168.3.22:3000/project', {
                 projectId: this.state.currentId,
                 title: payload
             }).then(res => {
@@ -174,7 +174,7 @@ export default createStore({
             )
         },
         async bindTask({commit}, payload) {
-            await axios.post('http://localhost:3000/project/bind', {
+            await axios.post('http://192.168.3.22:3000/project/bind', {
                 projectID:this.state.currentId,
                 requestID:payload.requestID
             }).then(res => {
@@ -189,7 +189,7 @@ export default createStore({
             })
         },
         async unbindTask({commit}, payload) {
-            await axios.post('http://localhost:3000/project/unbind', {
+            await axios.post('http://192.168.3.22:3000/project/unbind', {
                 projectId:this.state.currentId,
                 requestId:payload.requestID
             }).then(res => {
@@ -198,37 +198,37 @@ export default createStore({
             })
         },
         async fetchRequest({commit}, payload) {
-            await axios.get(`http://localhost:3000/requests/${payload}`).then(
+            await axios.get(`http://192.168.3.22:3000/requests/${payload}`).then(
                 res => commit('setRequest', res.data)
             )
         },
         async fetchStatuses({commit}) {
-            await axios.get('http://localhost:3000/status').then(
+            await axios.get('http://192.168.3.22:3000/status').then(
                 res => commit('fetchStatus', res.data)
             )
         },
         async nextStatus({commit}, payload) {
-            await axios.post('http://localhost:3000/requests/status/next', {
+            await axios.post('http://192.168.3.22:3000/requests/status/next', {
                 request_ID: payload.request_ID,
                 complete: payload.complete,
                 value: payload.value? payload.value : null
             })
         },
         async prevStatus({commit}, payload) {
-            await axios.post('http://localhost:3000/requests/status/prev', {
+            await axios.post('http://192.168.3.22:3000/requests/status/prev', {
                 request_ID: payload.request_ID,
                 complete: payload.complete
             })
         },
         async deleteTask({commit}, payload) {
-            await axios.delete('http://localhost:3000/requests', {
+            await axios.delete('http://192.168.3.22:3000/requests', {
                 data: {
                     requestId: payload
                 }
             })
         },
         async patchRequest ({commit}, payload) {
-            await axios.patch('http://localhost:3000/requests', {
+            await axios.patch('http://192.168.3.22:3000/requests', {
                 requestId:payload.requestId,
                 title: payload.title,
                 description: payload.description
@@ -237,7 +237,7 @@ export default createStore({
             })
         },
         async statusPost({commit}) {
-            await axios.post('http://localhost:3000/status').then(res => {
+            await axios.post('http://192.168.3.22:3000/status').then(res => {
                 commit('fetchStatus', res.data);
             })
         }

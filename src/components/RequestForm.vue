@@ -21,6 +21,8 @@
         <v-row justify="end" class="mb-2">
           <v-btn
               @click="validate"
+              height="50px"
+              class="mr-3"
 
           >
             Создать задачу
@@ -72,4 +74,5 @@ form {
   display: flex;
   flex-direction: column;
 }
+
 </style>

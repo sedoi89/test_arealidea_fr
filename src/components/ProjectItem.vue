@@ -1,30 +1,56 @@
 <template>
-  <div class="project">
-    <div class="project__wrapper">
-      <div >
-        <div><strong>ID проекта: </strong>{{ project.id }}</div>
-        <div v-if="!isEditing"><strong>Название: </strong>{{ project.title }}</div>
-        <my-input
+  <v-card class="project">
+    <v-container class="project__wrapper">
+      <div>
+        <div
+            class="for_edit"
+            v-if="!isEditing">
+          <v-icon
+              @click="editingProject"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-card-title
+              class="flex-shrink-1"
+          >
+            <strong>Название: </strong>
+           <span>{{ project.title }}</span>
+          </v-card-title>
+        </div>
+        <div
             v-else
-            v-model="newValue"
-        />
+            class="for_save">
+          <v-icon
+              @click="saveEditing"
+          >mdi-content-save</v-icon>
+          <v-text-field
+              v-model="newValue"
+              bg-color="none"
+              hide-details="auto"
+              :messages="['Введите новое название']"
+          />
+        </div>
+
+        <v-card-text><strong>ID проекта: </strong>{{ project.id }}</v-card-text>
       </div>
-      <my-button
-      @click="newTask"
+      <v-btn
+          class="border-b"
+          @click="newTask"
+          max-width="30%"
       >
-        Новая задача проекта
-      </my-button>
-      <my-dialog
-      :show="$store.state.addNewTask"
-      :key="project.id"
+        <span>Новая задача проекта</span>
+      </v-btn>
+      <v-dialog
+          v-model="$store.state.addNewTask"
+          :key="project.id"
       >
         <RequestForm
             :key="project.id"
         />
-      </my-dialog>
-    </div>
-    <div class="project__requests" >
-      <div class="request_item">
+      </v-dialog>
+    </v-container>
+    <div class="project__requests">
+      <v-card class="request_item align-center justify-center">
         <RequestItem
             v-if="!isEmpty(project.requests) "
             v-for="request in project.requests"
@@ -33,32 +59,23 @@
             :isEditing="isEditing"
         />
         <div v-else class="exception">
-         <strong> У проекта пока нет задач </strong>
+          <strong> У проекта пока нет задач </strong>
         </div>
-      </div>
+      </v-card>
     </div>
-    <div class="project__buttons">
-      <my-button
+
+      <v-btn
+          class="align-self-end"
+          color="red"
           @click="removeProject"
           style="align-self: center"
+          max-width="30%"
       >
-        Удалить <br> проект
-      </my-button>
 
-      <my-button
-        @click="editingProject"
-        v-if="!isEditing"
-      >
-        Изменить название проекта
-      </my-button>
-      <my-button
-      v-else
-      @click="saveEditing"
-      >
-      Сохранить изменения
-      </my-button>
-    </div>
-  </div>
+        <span> Удалить проект </span>
+      </v-btn>
+
+  </v-card>
 </template>
 <script>
 import MyButton from "@/components/UI/MyButton";
@@ -66,9 +83,10 @@ import RequestItem from "@/components/RequestItem";
 import MyInput from "@/components/UI/MyInput";
 import MyDialog from "@/components/UI/MyDialog";
 import RequestForm from "@/components/RequestForm";
+
 export default {
   components: {MyDialog, MyInput, MyButton, RequestItem, RequestForm},
-  data () {
+  data() {
     return {
       newTaskEditing: false,
       isEditing: false,
@@ -99,11 +117,11 @@ export default {
       this.isEditing = false;
     },
     isEmpty(obj) {
-  for (let key in obj) {
-    return false;
-  }
-  return true;
-}
+      for (let key in obj) {
+        return false;
+      }
+      return true;
+    }
   },
 }
 </script>
@@ -111,35 +129,55 @@ export default {
 <style scoped>
 .project {
   padding: 15px 20px;
-  border: 1px solid green;
+  border: 1px solid black;
   margin-top: 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
 }
+
 .project button {
   width: 50%;
   min-height: 55px;
   margin-bottom: 5px;
 }
-.project__buttons {
-  display: flex;
-  gap: 5px;
-}
+
+
 .project__wrapper {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
+
 .project__wrapper button {
-  max-width: 20%;
+
 }
+
 .exception {
   margin: 15px;
 }
+
 .request_item {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+button span {
+  white-space: normal
+}
+
+.for_edit, .for_save {
+  display: flex;
+  align-items: flex-start;
+}
+div span {
+  white-space: normal;
+}
+@media (max-width: 375px) {
+  .project__wrapper {
+    flex-direction: column;
+  }
 }
 </style>

@@ -3,12 +3,15 @@
     <div class="main__projects">
       <h1>Все проекты </h1>
       <v-btn
+          color="#99d8ea"
           class="main__projects btn"
           @click="showDialog"
       >
-        Новый проект
+        <span> Новый проект </span>
       </v-btn>
       <v-btn
+          color="#a1d3e1"
+          class="pa-3"
           @click="newTask"
       >
         Новая задача
@@ -42,7 +45,7 @@ import MyDialog from "@/components/UI/MyDialog";
 import MyButton from "@/components/UI/MyButton";
 import RequestForm from "@/components/RequestForm";
 import RequestItem from "@/components/RequestItem";
-import allProjects from "@/components/allProjects";
+import AllProjects from "@/components/AllProjects.vue";
 
 export default {
   data() {
@@ -56,7 +59,7 @@ export default {
     ProjectForm,
     RequestForm,
     RequestItem,
-    allProjects
+    AllProjects,
   },
   methods: {
     showDialog() {
@@ -85,14 +88,12 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .main {
   padding: 20px;
 }
-
 .main__projects {
   display: flex;
-  width: 100%;
 }
 
 .main__projects h1 {
@@ -100,7 +101,6 @@ export default {
 }
 
 .main__projects .btn {
-  align-self: flex-end;
   max-width: 20%;
 }
 
@@ -108,5 +108,8 @@ button {
   margin-right: 10px;
   min-height: 50px;
   min-width: 100px;
+}
+button span {
+  white-space: normal;
 }
 </style>

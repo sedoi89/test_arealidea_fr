@@ -11,15 +11,14 @@
               :rules="titleRules"
               required
           ></v-text-field>
-          <v-row
-              justify="end"
-              class="mb-2"
-          >
+
             <v-btn
+                class="align-self-end"
+                height="50px"
                 max-width="17%"
                 @click="validate"
-            >Создать</v-btn>
-          </v-row>
+            >Создать проект</v-btn>
+
         </v-form>
       </div>
 

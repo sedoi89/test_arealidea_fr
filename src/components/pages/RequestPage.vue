@@ -1,84 +1,187 @@
 <template>
-  <my-button @click="$router.push('/')">На главную</my-button>
-  <my-button @click="$router.push(`/${this.$route.params.id}`)">К проекту</my-button>
+  <div class="nav_buttons">
+    <v-btn variant="outlined" @click="$router.push(`/${this.$route.params.id}`)">К проекту</v-btn>
+    <v-btn variant="outlined" @click="$router.push('/')">На главную</v-btn>
+  </div>
+
+
   <div class="request" @click.stop="changeStatus = false">
-    <div class="request__item">
+    <v-card class="request__item">
       <div v-if="!changeRequestTexts">
-        <h4>Задача № {{ request.id }}</h4>
-        Название задачи: {{ request.title }} <br>
-        Описание задачи: {{ request.description }}
+        <v-card-title>Задача № {{ request.id }}</v-card-title>
+        <v-card-subtitle>
+          Название задачи:
+        </v-card-subtitle>
+        <v-card-item>
+          {{ request.title }}
+        </v-card-item>
+        <v-card-subtitle>
+          Описание задачи:
+        </v-card-subtitle>
+        <v-card-item>
+          {{ request.description }}
+        </v-card-item>
       </div>
       <div v-else>
-        <h4>Задача № {{ request.id }}</h4>
-        Название задачи:
-        <my-input v-model="newRequestTitle"></my-input>
-        Описание задачи:
-        <my-input v-model="newRequestDescription"></my-input>
+        <v-card-title>
+          Задача № {{ request.id }}
+        </v-card-title>
+        <v-card-subtitle>
+          Название задачи:
+        </v-card-subtitle>
+        <v-card-item>
+          <v-text-field
+              v-model="newRequestTitle"
+              bg-color="none"
+              hide-details="auto"
+              :messages="['Введите новое название задачи']"
+          />
+        </v-card-item>
+        <v-card-subtitle>
+          Описание задачи:
+        </v-card-subtitle>
+        <v-card-item>
+          <v-text-field
+              v-model="newRequestDescription"
+              bg-color="none"
+              hide-details="auto"
+              :messages="['Введите новое описание задачи']"
+          />
+        </v-card-item>
+
       </div>
       <div v-if="request.currentStatus && !changeStatus" @click.stop>
-        Статус задачи: {{ request.currentStatus[0].title }}
+        <v-card-subtitle>
+          Статус задачи:
+        </v-card-subtitle>
+        <v-card-item>
+          {{ request.currentStatus[0].title }}
+        </v-card-item>
       </div>
-      <div v-else-if="model === 'for_approval'" @click.stop>
-        Статус задачи:
-        <select v-model="model" @change="forApproval">
-          <option
-              v-for="status in this.$store.state.statuses.filter(i => i.cod !== model && i.cod !== 'preform')"
-              v-bind:value="status.cod"
-          >{{ status.title }}
-          </option>
-        </select>
-      </div>
-      <div v-else-if="model === 'preform'" @click.stop>
-        Статус задачи: <select v-model="model" @change="forApproval">
-        <option
-            v-for="status in this.$store.state.statuses.filter(
+      <v-card-item v-else-if="model === 'preform'" @click.stop>
+        <div>
+          <v-card-subtitle>
+            Статус задачи:
+          </v-card-subtitle>
+          <select
+              v-model="model"
+              @change="forApproval">
+            <option
+                v-for="status in this.$store.state.statuses.filter(
                 i => i.cod !== model && i.cod !== 'accepted' && i.cod !== 'rejected').slice(0,1)"
-            v-bind:value="status.cod"
-        >{{ status.title }}
-        </option>
-      </select>
+                v-bind:value="status.cod"
+            >{{ status.title }}
+            </option>
+          </select>
+        </div>
+      </v-card-item>
+
+      <div v-else-if="model === 'for_approval'" @click.stop>
+        <v-card-subtitle>
+          Статус задачи:
+        </v-card-subtitle>
+        <v-card-item>
+          <select
+              v-model="model"
+              @change="forApproval"
+          >
+            <option
+                v-for="status in this.$store.state.statuses.filter(i => i.cod !== model && i.cod !== 'preform')"
+                v-bind:value="status.cod"
+            >{{ status.title }}
+            </option>
+          </select>
+        </v-card-item>
+
       </div>
-      <div v-else-if="model === 'accepted' || model === 'rejected'" @click.stop>
-        Статус задачи: <select v-model="model" @change="forApproval">
-        <option
-            v-for="status in this.$store.state.statuses.filter(
+      <v-card-item v-else-if="model === 'accepted' || model === 'rejected'" @click.stop>
+
+        <div>
+          <v-card-subtitle>
+            Статус задачи:
+          </v-card-subtitle>
+          <select
+              v-model="model"
+              @change="forApproval">
+            <option
+                v-for="status in this.$store.state.statuses.filter(
                 i => i.cod !== model && i.cod !== 'accepted' && i.cod !== 'rejected' && i.cod !== 'for_approval' ).slice(1,3)"
-            v-bind:value="status.cod"
-        >{{ status.title }}
-        </option>
-      </select>
-      </div>
-      <div v-else @click.stop>
-        Статус задачи: <select v-model="model" @change="forApproval">
-        <option
-            v-for="status in this.$store.state.statuses.filter(
+                v-bind:value="status.cod"
+            >{{ status.title }}
+            </option>
+          </select>
+        </div>
+      </v-card-item>
+      <v-card-item v-else @click.stop>
+
+        <div>
+          <v-card-subtitle>
+            Статус задачи:
+          </v-card-subtitle>
+          <select
+              v-model="model"
+              @change="forApproval">
+            <option
+                v-for="status in this.$store.state.statuses.filter(
                 i => i.cod !== model && i.cod !== 'accepted' && i.cod !== 'rejected' ).slice(1,3)"
-            v-bind:value="status.cod"
-        >{{ status.title }}
-        </option>
-      </select>
-      </div>
+                v-bind:value="status.cod"
+            >{{ status.title }}
+            </option>
+          </select>
+        </div>
+      </v-card-item>
+
       <div class="buttons">
-        <my-button @click.stop="this.changeStatus  = !this.changeStatus" v-if="!this.changeStatus">Изменить статус
-        </my-button>
-        <my-button
+        <v-btn
+            @click.stop="this.changeStatus  = !this.changeStatus"
+            color="blue"
+        >
+         <span>
+           {{ this.changeStatus ? 'Отменить изменение' : 'Изменить статус' }}
+         </span>
+        </v-btn>
+
+        <v-btn
+            color="green accent-3"
             v-if="!request.project_ID"
             @click.stop="bind"
         >
-          Прикрепить к проекту
-        </my-button>
-        <my-button
+         <span>
+           Прикрепить к проекту
+         </span>
+        </v-btn>
+        <v-btn
+            color="orange"
             v-else
             @click.stop="unBind"
         >
-          Открепить от проекта
-        </my-button>
-        <my-button @click="deleteTask">Удалить задачу</my-button>
-        <my-button @click="changeRequestTexts = !changeRequestTexts" v-if="!changeRequestTexts">Изменить заявку
-        </my-button>
-        <my-button @click="changeRequestTextContent" v-else>Сохранить изменения</my-button>
+         <span>
+           Открепить от проекта
+         </span>
+        </v-btn>
+        <v-btn
+            color="indigo lighten-3"
+            @click="changeRequestTexts = !changeRequestTexts"
+            v-if="!changeRequestTexts">
+          <span>
+            Изменить задачу
+          </span>
+        </v-btn>
+        <v-btn
+            color="green"
+            @click="changeRequestTextContent" v-else>
+          <span>Сохранить изменения </span>
+        </v-btn>
+        <v-btn
+
+            color="red"
+            @click="deleteTask">
+         <span>
+           Удалить задачу
+         </span>
+        </v-btn>
       </div>
-    </div>
+    </v-card>
   </div>
 </template>
 
@@ -106,7 +209,9 @@ export default {
       statuses: [],
       changeRequestTexts: false,
       newRequestTitle: '',
-      newRequestDescription: ''
+      newRequestDescription: '',
+
+
     }
   },
   computed: {
@@ -202,18 +307,58 @@ export default {
 }
 </script>
 <style scoped>
+.nav_buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
 .request__item {
   display: flex;
   flex-direction: column;
-  border: 1px solid green;
+  border: 1px solid rgba(0, 0, 0, 0.3);
   margin: 5px;
   padding: 10px;
   gap: 5px;
 }
+
 .buttons {
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
+
 .buttons button:hover {
   cursor: pointer;
+}
+
+select {
+  min-width: 150px;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 5px;
+  width: 100%;
+  padding: 5px;
+}
+
+select:focus {
+  outline: none;
+}
+button {
+  margin: 10px;
+  min-width: 226px;
+}
+button span {
+  white-space: normal;
+}
+@media (max-width: 375px) {
+  .buttons {
+    flex-direction: column;
+  }
+  button {
+    min-height: 50px;
+  }
 }
 </style>
